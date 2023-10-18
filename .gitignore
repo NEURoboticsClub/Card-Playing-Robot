@@ -1,2 +1,6 @@
 .env
 ./video_script_testing/temp.jpg
+/datasets
+/runs
+yolov8n.pt
+yolov8s.pt
