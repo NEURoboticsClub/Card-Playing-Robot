@@ -53,7 +53,7 @@ git push origin branch-name
 
 [https://github.com/NEURoboticsClub/Card-Playing-Robot]
 
-## OTHER COMMANDS 
+## OTHER COMMANDS
 
 ### Look history of changes
 
