@@ -31,7 +31,7 @@ git checkout -b branch-name
 
 You can use these commands or the buttons on the left
 
-## Save changes locally:
+## Save changes locally
 
 ```bash
 git add .
