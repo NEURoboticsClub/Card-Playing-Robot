@@ -15,28 +15,31 @@ def match_check(deck, flipped):
 
 #Get mouse position, and check which card it's on using division
 def card_check(mouse_pos):
+
     MouseX = mouse_pos[0]
     MouseY = mouse_pos[1]
-    CardX = int(MouseX/125)
-    CardY = int(MouseY/181)
+    CardX = int(MouseX/WIDTH)
+    CardY = int(MouseY/HEIGHT)
     card = (CardX, CardY)
     return card
 
 #Draw the cards. This is used after initialization and to rehide cards
 def card_draw(cards):
     pygame.init()
-    DISPLAY_SIZE = (750, 905)
-    screen = pygame.display.set_mode(DISPLAY_SIZE)
-    
+
+    screen = pygame.display.set_mode(DISPLAY_SIZE, pygame.RESIZABLE)
+
     #Place card images in their appropriate spots by multiplying card width & height
     for i in range(6):
         for j in range(5):
-            screen.blit(cards[i+6*j], (i*125,j*181))
+            screen.blit(cards[i+6*j], (i*WIDTH,j*HEIGHT))
 
 #Load the main card images (used in cards_init())
 def card_load(char):
-    card = "./games/card_images/%s-spades.png" % char
+
+    card = "./card_images/%s-spades.png" % char
     card_load = pygame.image.load(card) 
+
     return card_load
 
 def cards_init():
@@ -61,14 +64,22 @@ def cards_init():
 
     return cards
 
-def main(runs):
-    DISPLAY_SIZE = (750, 905) 
+def main(runs, display_size):
+    global DISPLAY_SIZE 
+    global WIDTH; global HEIGHT
+
+    DISPLAY_SIZE = display_size
+    WIDTH = DISPLAY_SIZE[0] // 6
+    HEIGHT = DISPLAY_SIZE[1] // 5
+
     GAME_TITLE = "Python Memory Match"
     DESIRED_FPS = 60
 
     #Setup preliminary pygame stuff
     pygame.init()
-    screen = pygame.display.set_mode(DISPLAY_SIZE)
+
+    screen = pygame.display.set_mode(DISPLAY_SIZE,  
+                                 pygame.RESIZABLE) 
     pygame.display.set_caption(GAME_TITLE)
 
     fps_clock = pygame.time.Clock()
@@ -117,7 +128,8 @@ def main(runs):
                     flips.append(card_select)
                     #Put the actual value of the card on the screen (vs just the back)
                     if len(flips) <= 2:
-                        screen.blit(card_deck[6*card_select[1]+card_select[0]], (125*card_select[0],181*card_select[1]))
+                        scaled_card = pygame.transform.scale(card_deck[6*card_select[1]+card_select[0]], (WIDTH, HEIGHT))
+                        screen.blit(scaled_card, (WIDTH*card_select[0], HEIGHT*card_select[1]))
                         first_flip = time.time() #First card has been flipped
                     if len(flips) == 2:
                         second_flip = time.time() #Second card has been flipped
@@ -132,6 +144,9 @@ def main(runs):
                             t = 0 #Allows user to immediately flip next card
                         else:
                             missed += 1
+            elif event.type == pygame.VIDEORESIZE:
+                main(runs, (event.w, event.h))
+
 
         #Show the cards only for one second
         if len(flips) >= 2 and time.time() - second_flip > t:
@@ -161,10 +176,10 @@ def main(runs):
 
         if runs == 2: #Win mode of main
             if pressed_key[K_y]:
-                main(1)
+                main(1, display_size)
             elif pressed_key[K_n]:
                 game_run = False
 
     pygame.quit()
 
-main(0) #Three modes of main: first run (0), not first run (1), win (2)
+main(0, (750, 905)) #Three modes of main: first run (0), not first run (1), win (2)
