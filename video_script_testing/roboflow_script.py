@@ -2,7 +2,7 @@ from roboflow import Roboflow
 from dotenv import dotenv_values
 
 
-config = dotenv_values('../.env')
+config = dotenv_values('.env')
 
 rf = Roboflow(api_key=config['API_KEY'])
 project = rf.workspace().project('playing-cards-ow27d')

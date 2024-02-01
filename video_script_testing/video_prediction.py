@@ -5,8 +5,7 @@ import cv2
 import sys
 
 
-config = dotenv_values('../.env')
-
+config = dotenv_values('.env')
 rf = Roboflow(api_key=config['API_KEY'])
 project = rf.workspace().project('playing-cards-ow27d')
 model = project.version(4).model
@@ -26,8 +25,8 @@ while True:
 
     # frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     # print(frame.shape)
-    cv2.imshow('frame', frame)
-    cv2.imwrite('temp.jpg', frame)
+    # cv2.imshow('frame', frame)
+    # cv2.imwrite('temp.jpg', frame)
 
     pred = model.predict('temp.jpg', confidence=40, overlap=30).json()
     if pred['predictions']:
