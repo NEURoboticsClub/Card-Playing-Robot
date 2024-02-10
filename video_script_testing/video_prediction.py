@@ -23,10 +23,10 @@ while True:
         print("Can't receive frame (stream end?). Exiting ...")
         break
 
-    # frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     # print(frame.shape)
     # cv2.imshow('frame', frame)
-    # cv2.imwrite('temp.jpg', frame)
+    cv2.imwrite('temp.jpg', frame)
 
     pred = model.predict('temp.jpg', confidence=40, overlap=30).json()
     if pred['predictions']:
