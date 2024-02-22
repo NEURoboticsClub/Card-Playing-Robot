@@ -30,25 +30,26 @@ while True:
 
     pred = model.predict(frame, confidence=40, overlap=30).json()
     if pred['predictions']:
-        print(pred['predictions'][0]['class'])
+        # print(pred['predictions'][0]['class'])
         print('pred', pred)
 
-        x = int(pred['predictions'][0]["x"])
-        y = int(pred['predictions'][0]["y"])
-        width = int(pred['predictions'][0]["width"])
-        height = int(pred['predictions'][0]["height"])
-
-        # print("x", x)
-        # print("y", y)
-        # print("width", width)
-        # print("height", height)
-
-
         img_array = pred["predictions"][0]["image_path"]
-        
-        # img = cv2.cvtColor(img_array, cv2.COLOR_RGB2BGR)
 
-        cv2.rectangle(img_array, (x, y), (x + width, y + height), (0, 255, 0), 2)
+        for idx, p in enumerate(pred['predictions']):
+
+            x = int(pred['predictions'][idx]["x"])
+            y = int(pred['predictions'][idx]["y"])
+            width = int(pred['predictions'][idx]["width"])
+            height = int(pred['predictions'][idx]["height"])
+
+            # print("x", x)
+            # print("y", y)
+            # print("width", width)
+            # print("height", height)
+            
+            # img = cv2.cvtColor(img_array, cv2.COLOR_RGB2BGR)
+
+            cv2.rectangle(img_array, (x, y), (x + width, y + height), (0, 255, 0), 2)
         
         
         cv2.imshow('image', img_array)
