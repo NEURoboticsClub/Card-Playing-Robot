@@ -11,7 +11,7 @@ rf = Roboflow(api_key=config['API_KEY'])
 project = rf.workspace().project('playing-cards-ow27d')
 model = project.version(4).model
 
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 
 if not cap.isOpened():
     print("Cannot open camera")
@@ -31,9 +31,7 @@ while True:
     pred = model.predict(frame, confidence=40, overlap=30).json()
     if pred['predictions']:
         # print(pred['predictions'][0]['class'])
-        print('pred', pred)
-
-        img_array = pred["predictions"][0]["image_path"]
+        # print('pred', pred)
 
         for idx, p in enumerate(pred['predictions']):
 
@@ -42,17 +40,17 @@ while True:
             width = int(pred['predictions'][idx]["width"])
             height = int(pred['predictions'][idx]["height"])
 
-            # print("x", x)
+            # print("x", x)print(pred['predictions'][0]['class']
             # print("y", y)
             # print("width", width)
             # print("height", height)
             
             # img = cv2.cvtColor(img_array, cv2.COLOR_RGB2BGR)
 
-            cv2.rectangle(img_array, (x, y), (x + width, y + height), (0, 255, 0), 2)
+            # cv2.rectangle(img_array, (x, y), (x + width, y + height), (0, 255, 0), 2)
         
-        
-        cv2.imshow('image', img_array)
+            print("prediction", pred['predictions'][idx]['class'], (x, y))
+        # cv2.imshow('image', img_array)
     else:
         print('No card found...')
 
@@ -68,4 +66,4 @@ cv2.destroyAllWindows()
 ### Next steps:
 # -- speed up API calls - maybe by training own model?
 # -- more accurate bounding boxes
-# -- detect multiple cards in a frame
+# -- detect multiple cards in a frame - DONE
