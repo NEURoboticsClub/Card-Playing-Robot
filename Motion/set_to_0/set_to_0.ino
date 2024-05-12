@@ -7,6 +7,6 @@ void setup() {
 }
 
 void loop() {
-  servo1.write(190);  // Set servo position to 0 degrees
+  servo1.write(120);  // Set servo position to 0 degrees
   delay(1000);      // Wait for 1 second
 }
