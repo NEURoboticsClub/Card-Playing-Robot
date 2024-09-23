@@ -3,5 +3,6 @@
 Git instructions in `git_instructions.md`
 
 Raspberry Pi 5 info:
-username: Cardbot
-password: Cardbot
+hostname: cardplaying.local
+username: cardbot
+password: cardbot
