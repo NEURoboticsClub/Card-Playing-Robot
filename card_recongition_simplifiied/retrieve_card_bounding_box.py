@@ -3,7 +3,7 @@ import numpy as np
 from scipy.ndimage import center_of_mass
 
 
-def get_bounding_box_of_one_card(img) -> (int, int, int, int):
+def get_bounding_box_of_card(img) -> (int, int, int, int):
     '''
     Get bounding box of a given card
 
@@ -30,4 +30,3 @@ def get_bounding_box_of_one_card(img) -> (int, int, int, int):
     min_y, max_y = ys.min(), ys.max()
 
     return (min_x, min_y, max_x, max_y)
-    
