@@ -2,33 +2,30 @@
 
 from enum import Enum
 from card import Card
+from collections import Counter
+from typing import List
 
 
+def is_straight_flush(hand: List[Card]):
+    return is_flush(hand) and is_straight(hand)
 
-def is_straight_flush(hand: set[Card]):
-    return is_flush(hand) & is_straight(hand)
-
-def is_flush(hand: set[Card]):
+def is_flush(hand: List[Card]):
     #dictionary of unique suits
-    suits = {card.suit for card in hand}
+    suits = {i.suit.value for i in hand}
     #if there is more than one suit, return false
-    if len(suits) > 1:
-        return False
+    return len(suits) == 1
 
-def is_straight(hand: set[Card]):
-    #list of sorted cards by their value
-    sorted_hand = sorted(hand, key=lambda card: card.face.value)
-    #the correct, consecutive sequence for a straight flush 
-    values = list(range(sorted_hand[0], sorted_hand[len(sorted_hand) - 1]))
-    for i in values:
-        if (sorted[i] != values[i]):
-            return False
-    return True
+def is_straight(hand: List[Card]):
+    values = [i.face.value for i in hand]
 
-def is_straight_flush(hand: set[Card]):
-    return is_flush(hand) & is_straight(hand)
+    # checks if is in ascending order
+    ascending = sorted(values) == list(range(min(values), max(values) + 1))
+    # checks if in descending order
+    descending = sorted(values, reverse=True) == list(range(max(values), min(values) - 1, -1))
 
-def is_royal_flush(hand: set[Card]):
+    return ascending or descending
+
+def is_royal_flush(hand: List[Card]):
     if not is_flush(hand):
         return False
     values = sorted_hand = sorted(hand, key=lambda card: card.face.value)
@@ -38,22 +35,26 @@ def is_royal_flush(hand: set[Card]):
             return False
     return True
 
-def is_four_of_a_kind(hand:set[Card]):
-    values = sorted_hand = sorted(hand, key=lambda card: card.face.value)
-    return values[0] == values[2] | values[1] == values[3]
+def is_four_of_a_kind(hand: List[Card]):
+    count = {}
+    for i in hand:
+        if i.face not in count:
+            count[i.face] = 1
+        else:
+            count[i.face] += 1
+    
+    return any(i >= 4 for i in count.values())
 
-def is_full_house(hand: set[Card]):
-    #dictionary of unique suits
-    values = {card.value for card in hand}
-    #if there is more than one suit, return false
-    if len(values) != 2:
+def is_full_house(hand: List[Card]):
+    #dictionary of unique suits and faces
+    faces = {card.face.value for card in hand}
+    #if there is more than one face, return false
+    if len(faces) != 2:
         return False
     
-    key_list = values.keys()
-    return (key_list[0] == key_list[1] & key_list[2] == key_list[4]) | (key_list[0] == key_list[2] & key_list[3] == key_list[4])
-
-
-def is_three_of_a_kind(hand:set[Card]):
+    return True
+    
+def is_three_of_a_kind(hand: List[Card]):
     # Dictionary to store the frequency of each card rank
     rank_count = {}
 
@@ -69,7 +70,7 @@ def is_three_of_a_kind(hand:set[Card]):
     
     return sorted(counts) == [1, 1, 3]
 
-def rank_frequency(hand:set[Card]):
+def rank_frequency(hand: List[Card]):
     # Dictionary to store the frequency of each card rank
     rank_count = {}
 
@@ -84,11 +85,11 @@ def rank_frequency(hand:set[Card]):
     counts = list(rank_count.values())
     return counts
 
-def is_two_pair(hand:set[Card]):
+def is_two_pair(hand: List[Card]):
     freq = rank_frequency(hand)
     return sorted(freq) == [1, 2, 2]
 
-def is_pair(hand:set[Card]):
+def is_pair(hand: List[Card]):
     freq = rank_frequency(hand)
     return sorted(freq) == [1, 1, 1, 2]
 
