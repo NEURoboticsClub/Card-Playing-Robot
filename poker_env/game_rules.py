@@ -26,9 +26,11 @@ def is_straight(hand: List[Card]):
     return ascending or descending
 
 def is_royal_flush(hand: List[Card]):
+    # checks if flush
     if not is_flush(hand):
         return False
     values = sorted_hand = sorted(hand, key=lambda card: card.face.value)
+    # checks if values are royal flush
     royal_values = list(1, 10, 11, 12, 13)
     for i in values:
         if (sorted[i] != values[i]):
@@ -43,6 +45,7 @@ def is_four_of_a_kind(hand: List[Card]):
         else:
             count[i.face] += 1
     
+    # checks if there are at least 4 of the same face
     return any(i >= 4 for i in count.values())
 
 def is_full_house(hand: List[Card]):
@@ -92,14 +95,3 @@ def is_two_pair(hand: List[Card]):
 def is_pair(hand: List[Card]):
     freq = rank_frequency(hand)
     return sorted(freq) == [1, 1, 1, 2]
-
-
-        
-# def compare_hand(hand1: set[Card], hand2: set[Card]):
-#     if len(hand1) != 4:
-#         raise ValueError('Hand must be length 4')
-#     if len(hand2) != 4:
-#         raise ValueError('Hand must be length 4')
-
-#     # check for straight flush
-#     if sorted(hand1, key=lambda card: card.face.value) == list(range(min(l), max(l)+1))
