@@ -3,5 +3,6 @@
 /datasets
 /runs
 /poker_env/__pycache__
+/card_recongition_simplifiied/Card Images/*
 yolov8n.pt
 yolov8s.pt
