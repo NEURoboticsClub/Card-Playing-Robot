@@ -33,6 +33,7 @@ class Player:
     def bet(self, number_of_chips: int):
         self.current_bet = number_of_chips
 
+    #remove the current hand
     def discard(self):
         self.hand = []
 
@@ -42,19 +43,30 @@ class Player:
     def set_action(self, action: PokerAction):
         self.current_action = action
 
+#TO-DO LIST FOR ALL SUBSEQUENT PROGRAMMERS:
+#CHECK THEM OFF IF YOU HAVE ALREADY DONE IT
+
+#Task 1: Create a shuffle function(s) to shuffle and randomize the deck. One to shuffle a new deck and one to shuffle all the current cards.
+#Task 2: Create function(s) to properly set up all the players and the pot at the start.
+#Task 3: Create the ultimate simulator function combining all the previous functions to fully simulate a new game.
+
 class PokerGame:
     players: List[Player]
     deck: List[Card]
     table_hand: List[Card]
     pot: int
 
+    #all players MUST have 0 cards.
+    #deck MUST be 52 cards full
+    #pot MUST be 0
     def __init__(self, players: List[Player], deck: List[Card], pot: int):
         self.players = players
         self.deck = deck
         self.pot = pot
         self.table_hand = []
     
-    def play_to_table(self, number_of_cards: int):
+    #Deals number_of_cards public cards to the table
+    def deal_to_table(self, number_of_cards: int):
         for _ in range(number_of_cards):
             if len(self.deck) != 0:
                 self.table_hand.append(self.deck[0])
@@ -62,6 +74,7 @@ class PokerGame:
             else:
                 break
 
+    #goes through every player and forces each player to take their designated action as determined in the Player class
     def betting_round(self):
         previous_player_checked = False
         for player in self.players:
@@ -75,6 +88,7 @@ class PokerGame:
                 ...
                 previous_player_checked = True
 
+    #When there is five cards left, determine the best hand out of all the players
     def determine_winning_hand(self):
         scores = {i.name : Scoring.get_scoring_given_hand(i.hand) for i in self.players}
         scores = {name : (scoring, scoring.value) for name, scoring in scores}
