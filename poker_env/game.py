@@ -1,4 +1,6 @@
 from card import Card
+from card import Face
+from card import Suit
 from scoring_type import Scoring
 from enum import Enum
 from typing import List
@@ -50,18 +52,19 @@ class PokerGame:
         self.players = players
         self.deck = deck
         self.pot = pot
+        self.table_hand = []
     
     def play_to_table(self, number_of_cards: int):
         for _ in range(number_of_cards):
-            if len(deck) != 0:
-                table_hand.append(deck[0])
-                deck.remove(0)
+            if len(self.deck) != 0:
+                self.table_hand.append(self.deck[0])
+                self.deck.remove(0)
             else:
                 break
 
     def betting_round(self):
         previous_player_checked = False
-        for player in players:
+        for player in self.players:
             if player.current_action == PokerAction.CALL:
                 ...
             elif player.current_action == PokerAction.RAISE:
@@ -73,7 +76,7 @@ class PokerGame:
                 previous_player_checked = True
 
     def determine_winning_hand(self):
-        scores = {i.name : Scoring.get_scoring_given_hand(i.hand) for i in players}
+        scores = {i.name : Scoring.get_scoring_given_hand(i.hand) for i in self.players}
         scores = {name : (scoring, scoring.value) for name, scoring in scores}
         maximum_score = max(list(scores.values()))
 
@@ -88,7 +91,7 @@ class PokerGame:
         best_cards_and_players = {}
         for player_name in best_players:
             highest_card = Card(Face.TWO, Suit.SPADES)
-            for player in players:
+            for player in self.players:
                 if player.name == player_name:
                     current_player = player
             
