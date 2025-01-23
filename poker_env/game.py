@@ -4,6 +4,7 @@ from card import Suit
 from scoring_type import Scoring
 from enum import Enum
 from typing import List
+import random
 
 
 class PokerAction(Enum):
@@ -47,8 +48,12 @@ class Player:
 #CHECK THEM OFF IF YOU HAVE ALREADY DONE IT
 
 #Task 1: Create a shuffle function(s) to shuffle and randomize the deck. One to shuffle a new deck and one to shuffle all the current cards.
+
+#TASK 1 is now finished.
+
 #Task 2: Create function(s) to properly set up all the players and the pot at the start.
 #Task 3: Create the ultimate simulator function combining all the previous functions to fully simulate a new game.
+#Task 4: Create unit tests for the tasks 1-3
 
 class PokerGame:
     players: List[Player]
@@ -59,11 +64,42 @@ class PokerGame:
     #all players MUST have 0 cards.
     #deck MUST be 52 cards full
     #pot MUST be 0
-    def __init__(self, players: List[Player], deck: List[Card], pot: int):
+    def __init__(self, players: List[Player]):
         self.players = players
-        self.deck = deck
-        self.pot = pot
+        self.deck = self.shuffle_deck_full()
+        self.pot = 0
         self.table_hand = []
+
+
+    #generates a fully shuffled deck of 52 cards NOT TESTED
+    def shuffle_deck_full(self):
+        deck = []
+        for number_name,number_val in Face:
+            for suit_name,suit_val in Suit:
+                newCard = Card(number_name,suit_name)
+                deck.append(newCard)
+        
+        #at this point we created a sorted deck of 52 unique cards
+
+        shuffledDeck = []
+
+        while len(deck) > 1:
+            randomIndex = random.randint(0,len(deck)-1)
+            shuffledDeck.append(deck.pop(randomIndex))
+        shuffledDeck.append(deck.pop(0))
+
+        return shuffledDeck
+    
+    #shuffles a given deck of cards NOT TESTED
+    def shuffle_deck_current(self,currentDeck):
+        shuffledDeck = []
+
+        while len(currentDeck) > 1:
+            randomIndex = random.randint(0,len(currentDeck)-1)
+            shuffledDeck.append(currentDeck.pop(randomIndex))
+        shuffledDeck.append(currentDeck.pop(0))
+
+        return shuffledDeck
     
     #Deals number_of_cards public cards to the table
     def deal_to_table(self, number_of_cards: int):
