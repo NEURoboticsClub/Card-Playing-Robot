@@ -90,7 +90,7 @@ class PokerGame:
 
         return shuffledDeck
     
-    #shuffles a given deck of cards NOT TESTED
+    #shuffles a given deck of cards TESTED
     #This will ALTER the previous deck of cards, turning the previous deck into length 0.
     def shuffle_deck_current(self,currentDeck):
         shuffledDeck = []
@@ -102,6 +102,11 @@ class PokerGame:
 
         return shuffledDeck
     
+    #checks if the deck has enough cards to deal the river.
+    #returns true if it can, false if it cannot.
+    def is_river_dealable(self):
+        return len(self.deck) >= 5
+    
     #Deals number_of_cards public cards to the table
     def deal_to_table(self, number_of_cards: int):
         for _ in range(number_of_cards):
@@ -110,6 +115,32 @@ class PokerGame:
                 self.deck.remove(0)
             else:
                 break
+    
+    #Deals two cards by default to each player from the deck, if there are not enough cards in the deck to do so, return false.
+    #otherwise return true to signify that the operation is successful
+    def deal_to_players(self, number_of_cards_per_player = 2):
+        required_card_total = number_of_cards_per_player * len(self.players)
+        if required_card_total > len(self.deck):return False
+        for player in self.players:
+            plucked_card = self.deck.pop(0)
+            plucked_card_2 = self.deck.pop(0)
+            player.add_card_to_hand(plucked_card)
+            player.add_card_to_hand(plucked_card_2)
+        return True
+    
+    #discard all hands from all players
+    def remove_all_cards_from_players(self):
+        for player in self.players:
+            player.discard()
+    
+    
+    # award all the money from the pot into the selected player
+    def award_winnings(self,winning_player):
+        winning_player.chips += self.pot
+        self.pot = 0
+
+
+
 
     #goes through every player and forces each player to take their designated action as determined in the Player class
     def betting_round(self):
