@@ -49,7 +49,7 @@ class Player:
 
 #Task 1: Create a shuffle function(s) to shuffle and randomize the deck. One to shuffle a new deck and one to shuffle all the current cards.
 
-#TASK 1 is now finished.
+#TASK 1 is now finished. Also made tests for TASK 1
 
 #Task 2: Create function(s) to properly set up all the players and the pot at the start.
 #Task 3: Create the ultimate simulator function combining all the previous functions to fully simulate a new game.
@@ -74,8 +74,8 @@ class PokerGame:
     #generates a fully shuffled deck of 52 cards NOT TESTED
     def shuffle_deck_full(self):
         deck = []
-        for number_name,number_val in Face:
-            for suit_name,suit_val in Suit:
+        for number_name in Face:
+            for suit_name in Suit:
                 newCard = Card(number_name,suit_name)
                 deck.append(newCard)
         
