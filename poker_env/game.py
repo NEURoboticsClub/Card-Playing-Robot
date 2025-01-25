@@ -71,7 +71,7 @@ class PokerGame:
         self.table_hand = []
 
 
-    #generates a fully shuffled deck of 52 cards NOT TESTED
+    #generates a fully shuffled deck of 52 cards TESTED
     def shuffle_deck_full(self):
         deck = []
         for number_name in Face:
@@ -91,6 +91,7 @@ class PokerGame:
         return shuffledDeck
     
     #shuffles a given deck of cards NOT TESTED
+    #This will ALTER the previous deck of cards, turning the previous deck into length 0.
     def shuffle_deck_current(self,currentDeck):
         shuffledDeck = []
 

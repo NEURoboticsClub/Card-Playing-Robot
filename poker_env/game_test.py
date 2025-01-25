@@ -92,6 +92,18 @@ class TestGame(unittest.TestCase):
 
         self.assertEqual(set(diamond_list).issubset(set(testDeck)),True)
 
+    def test_shuffle_deck_current(self):
+        testPokerGame = PokerGame([])
+        testDeck = testPokerGame.shuffle_deck_full()
+        
+
+        testDeck.pop(0)
+        testDeck.pop(0)
+        testDeck.pop(0)
+        testDeck2 = testPokerGame.shuffle_deck_current(testDeck)
+
+        self.assertEqual(49,len(testDeck2))
+
         
 if __name__ == '__main__':
     unittest.main()
