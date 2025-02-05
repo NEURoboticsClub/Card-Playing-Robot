@@ -4,6 +4,7 @@ from card import Suit
 from scoring_type import Scoring
 from enum import Enum
 from typing import List
+import copy
 import random
 
 
@@ -43,6 +44,8 @@ class Player:
     
     def set_action(self, action: PokerAction):
         self.current_action = action
+    
+    
 
 #TO-DO LIST FOR ALL SUBSEQUENT PROGRAMMERS:
 #CHECK THEM OFF IF YOU HAVE ALREADY DONE IT
@@ -60,6 +63,7 @@ class PokerGame:
     deck: List[Card]
     table_hand: List[Card]
     pot: int
+    buy_in: int
 
     #all players MUST have 0 cards.
     #deck MUST be 52 cards full
@@ -68,6 +72,7 @@ class PokerGame:
         self.players = players
         self.deck = self.shuffle_deck_full()
         self.pot = 0
+        self.buy_in = 0
         self.table_hand = []
 
 
@@ -144,10 +149,14 @@ class PokerGame:
 
     #goes through every player and forces each player to take their designated action as determined in the Player class
     def betting_round(self):
+        player_queue = copy.deepcopy(self.players)
+        player_queue_reference = []
         previous_player_checked = False
-        for player in self.players:
+        for player in player_queue:
             if player.current_action == PokerAction.CALL:
-                ...
+                player.bet(self.buy_in)#this needs to change
+                self.pot += self.buy_in
+                player_queue_reference.append(player_queue.pop(0))
             elif player.current_action == PokerAction.RAISE:
                 ...
             elif player.current_action == PokerAction.FOLD:
