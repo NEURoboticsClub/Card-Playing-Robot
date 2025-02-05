@@ -20,12 +20,14 @@ class Player:
     current_bet: int
     current_action: PokerAction
     hand: List[Card]
+    action_list: List[PokerAction]
 
-    def __init__(self, name: str, hand: List[Card], chips: int):
+    def __init__(self, name: str, hand: List[Card], chips: int,action_list: List[PokerAction]):
         self.name = name
         self.hand = hand
         self.chips = chips
         self.current_bet = 0
+        self.action_list = action_list
 
     # call is when same number of chips is bet
     # raise is when more chips are bet
@@ -42,8 +44,10 @@ class Player:
     def add_card_to_hand(self, card: Card):
         self.hand.append(card)
     
-    def set_action(self, action: PokerAction):
-        self.current_action = action
+
+    def action_cycle(self):
+        self.current_action = self.action_cycle[0]
+        self.action_cycle.pop()
     
     
 
@@ -55,8 +59,13 @@ class Player:
 #TASK 1 is now finished. Also made tests for TASK 1
 
 #Task 2: Create function(s) to properly set up all the players and the pot at the start.
+
+#Task 2 is now finished. We need to make tests for it.
+
+
 #Task 3: Create the ultimate simulator function combining all the previous functions to fully simulate a new game.
 #Task 4: Create unit tests for the tasks 1-3
+#Task 5: Recreate Betting Round.
 
 class PokerGame:
     players: List[Player]
@@ -149,21 +158,8 @@ class PokerGame:
 
     #goes through every player and forces each player to take their designated action as determined in the Player class
     def betting_round(self):
-        player_queue = copy.deepcopy(self.players)
-        player_queue_reference = []
-        previous_player_checked = False
-        for player in player_queue:
-            if player.current_action == PokerAction.CALL:
-                player.bet(self.buy_in)#this needs to change
-                self.pot += self.buy_in
-                player_queue_reference.append(player_queue.pop(0))
-            elif player.current_action == PokerAction.RAISE:
-                ...
-            elif player.current_action == PokerAction.FOLD:
-                ...
-            elif player.current_action == PokerAction.CHECK:
-                ...
-                previous_player_checked = True
+        for i in self.players:#pre-emptively load everyone's actions.
+            i.action_cycle()
 
     #When there is five cards left, determine the best hand out of all the players
     def determine_winning_hand(self):
