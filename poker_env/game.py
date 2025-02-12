@@ -10,9 +10,12 @@ import random
 
 class PokerAction(Enum):
     CALL = 0
-    RAISE = 1
-    FOLD = 2
-    CHECK = 3
+    FOLD = 1
+    CHECK = 2
+    RAISE_LOW = 10
+    RAISE_MED = 20
+    RAISE_HIGH = 30
+
 
 class Player:
     name: str
@@ -22,9 +25,9 @@ class Player:
     hand: List[Card]
     action_list: List[PokerAction]
 
-    def __init__(self, name: str, hand: List[Card], chips: int,action_list: List[PokerAction]):
+    def __init__(self, name: str, chips: int,action_list: List[PokerAction]):
         self.name = name
-        self.hand = hand
+        self.hand = []
         self.chips = chips
         self.current_bet = 0
         self.action_list = action_list
@@ -43,11 +46,12 @@ class Player:
 
     def add_card_to_hand(self, card: Card):
         self.hand.append(card)
+
+    def getAction(self):
+        return self.action_list.pop(0)
     
 
-    def action_cycle(self):
-        self.current_action = self.action_cycle[0]
-        self.action_cycle.pop()
+
     
     
 
@@ -147,6 +151,22 @@ class PokerGame:
         for player in self.players:
             player.discard()
     
+    def startNewGame(self):
+        self.remove_all_cards_from_players()
+        self.deck = self.shuffle_deck_full()
+        self.deal_to_players()
+        self.betting_round()
+        #dealing the river
+        self.deal_to_table(3)
+        self.betting_round()
+        #4th
+        self.deal_to_table(1)
+        self.betting_round()
+        #5th
+        self.deal_to_table(1)
+        self.betting_round()
+        self.award_winnings(self.determine_winning_hand())
+    
     
     # award all the money from the pot into the selected player
     def award_winnings(self,winning_player):
@@ -158,8 +178,7 @@ class PokerGame:
 
     #goes through every player and forces each player to take their designated action as determined in the Player class
     def betting_round(self):
-        for i in self.players:#pre-emptively load everyone's actions.
-            i.action_cycle()
+        x = input("Press Enter to Continue: ")
 
     #When there is five cards left, determine the best hand out of all the players
     def determine_winning_hand(self):
