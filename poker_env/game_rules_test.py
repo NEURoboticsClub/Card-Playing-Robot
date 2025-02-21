@@ -1,4 +1,4 @@
-from card import Card, Face, Suit
+from card import Card, Face, Suit, generate_all_cards
 from scoring_type import Scoring
 from random import shuffle
 from typing import List
@@ -10,7 +10,7 @@ class TestGameRules(unittest.TestCase):
     # NOTE: Testcase examples should always be input in Most Significant Card sort order
     # Suits are sorted SPADE > HEART > DIAMOND > CLUB
 
-    PERMCOUNT = 5
+    PERMCOUNT = 10
 
     def n_perms(self, example: List[Card], amount: int):
         """
@@ -354,6 +354,28 @@ class TestGameRules(unittest.TestCase):
             Scoring.TwoPairs,
             Scoring.NoPair,
         )
+    
+    def test_tiebreak_random_hands(self):
+        # Generate a random selection of 7 cards from the deck
+        all_cards = generate_all_cards()  # This returns a list of all cards
+        for _ in range(self.PERMCOUNT):
+            shuffle(all_cards)  # Shuffle the cards
+            
+            # Select the first 7 cards for both hands (ensuring both hands are the same)
+            hand1 = all_cards[:7]
+            hand2 = all_cards[:7]
+            
+            # Ensure both hands have the same scoring type
+            score1 = Scoring.get_scoring_given_hand(hand1)
+            score2 = Scoring.get_scoring_given_hand(hand2)
+
+            assert (score1 == score2), "Scoring types for identical hands not equal (0_0)"
+            
+            # Call tiebreak and assert it results in a tie
+            result = Scoring.tiebreak(hand1, hand2, score1)
+            
+            # Since both hands are identical, the result should always be a tie
+            self.assertEqual(result, 0, "The tiebreak function should always return 0 for identical hands.")
 
 if __name__ == '__main__':
     unittest.main()
