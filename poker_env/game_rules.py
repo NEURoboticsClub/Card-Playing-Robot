@@ -134,18 +134,19 @@ def _best_straight(highest: int, hand: List[Card], ace_high: bool = True):
     raise ValueError(f"Straight detection failed unexpectedly: {best_hand}")
         
 
+# Vestigial Structure
 
-def is_royal_flush(hand: List[Card]):
-    """
-    Check if it's a straight flush equal to (AKQJT)
-    """
-    sort_hand = is_straight_flush(hand)
-    if not sort_hand: return False
-    # Card face values for AKQJT
-    wanted = [14,13,12,11,10]
-    for i in range(5):
-        if sort_hand[i].face.value != wanted[i]: return False
-    return sort_hand
+# def is_royal_flush(hand: List[Card]):
+#     """
+#     Check if it's a straight flush equal to (AKQJT)
+#     """
+#     sort_hand = is_straight_flush(hand)
+#     if not sort_hand: return False
+#     # Card face values for AKQJT
+#     wanted = [14,13,12,11,10]
+#     for i in range(5):
+#         if sort_hand[i].face.value != wanted[i]: return False
+#     return sort_hand
 
 def is_four_of_a_kind(hand: List[Card]):
     """
