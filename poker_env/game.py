@@ -6,15 +6,22 @@ from enum import Enum
 from typing import List
 import copy
 import random
+from dataclasses import dataclass
 
+@dataclass
+class PokerAction:
+    expanActionList = ["CALL","RAISE","FOLD","CHECK"]
 
-class PokerAction(Enum):
-    CALL = 0
-    FOLD = 1
-    CHECK = 2
-    RAISE_LOW = 10
-    RAISE_MED = 20
-    RAISE_HIGH = 30
+    def generate(action:str):
+        p = PokerAction()
+        p.action = action
+        return p
+    
+    def generateRaise(action:str, amount:int):
+        p = PokerAction()
+        p.action = action
+        p.amount = amount
+        return p
 
 
 #Players must have the following fields and methods:
@@ -28,9 +35,9 @@ class Player:
     name: str
     chips: int
     current_bet: int
-    current_action: PokerAction
-    hand: List[Card]
-    action_list: List[PokerAction]
+    _current_action: PokerAction
+    _hand: List[Card]
+    _action_list: List[PokerAction]
 
     def __init__(self, name: str, chips: int,action_list: List[PokerAction]):
         self.name = name
@@ -80,7 +87,7 @@ class Player:
 
 class PokerGame:
     players: List[Player]
-    deck: List[Card]
+    _deck: List[Card]
     table_hand: List[Card]
     pot: int
     buy_in: int
