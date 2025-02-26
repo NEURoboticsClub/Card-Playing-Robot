@@ -17,6 +17,13 @@ class PokerAction(Enum):
     RAISE_HIGH = 30
 
 
+#Players must have the following fields and methods:
+#name: str
+#chips: int
+#current_bet: int
+#hand: List[Card]
+#getAction() -> PokerAction
+
 class Player:
     name: str
     chips: int
@@ -143,7 +150,7 @@ class PokerGame:
             plucked_card = self.deck.pop(0)
             plucked_card_2 = self.deck.pop(0)
             player.add_card_to_hand(plucked_card)
-            player.add_card_to_hand(plucked_card_2)
+            player.add_card_to_hand(plucked_card_2) #possible change this literal intepretation
         return True
     
     #discard all hands from all players
