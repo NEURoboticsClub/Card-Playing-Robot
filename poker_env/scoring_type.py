@@ -54,8 +54,8 @@ class Scoring(Enum):
             h1 = gr.is_full_house(hand1)
             h2 = gr.is_full_house(hand2)
         elif score == Scoring.Flush:
-            h1 = gr.is_straight_flush(hand1)
-            h2 = gr.is_straight_flush(hand2)
+            h1 = gr.is_flush(hand1)
+            h2 = gr.is_flush(hand2)
         elif score == Scoring.Straight:
             h1 = gr.is_straight(hand1)
             h2 = gr.is_straight(hand2)
@@ -72,7 +72,7 @@ class Scoring(Enum):
             h1 = gr.is_no_pair(hand1)
             h2 = gr.is_no_pair(hand2)
         else: raise ValueError("scoring type invalid")
-        assert (len(h1) == len(h2) == 5), f"Lengths do not match up\nhand1: {hand1},\nh1: {h1},\nhand2: {hand2},\nh2: {h2}\n"
+        assert (len(h1) == len(h2) == 5), f"Lengths do not match up\nScoring type: {score}\nhand1: {hand1},\nh1: {h1},\nhand2: {hand2},\nh2: {h2}\n"
 
 
         for i in range(5):
