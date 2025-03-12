@@ -10,14 +10,9 @@ from dataclasses import dataclass
 
 @dataclass
 class PokerAction:
-    expanActionList = ["CALL","RAISE","FOLD","CHECK"]
-
-    def generate(action:str):
-        p = PokerAction()
-        p.action = action
-        return p
+    expansiveActionList = ["CALL","RAISE","FOLD","CHECK"]
     
-    def generateRaise(action:str, amount:int):
+    def generateRaise(action:str, amount:int = -1):
         p = PokerAction()
         p.action = action
         p.amount = amount
@@ -30,6 +25,8 @@ class PokerAction:
 #current_bet: int
 #hand: List[Card]
 #getAction() -> PokerAction
+#blind: enum class: {SMALL, BIG, NONE}
+#bet(number_of_chips: int)
 
 class Player:
     name: str
@@ -193,6 +190,18 @@ class PokerGame:
     #goes through every player and forces each player to take their designated action as determined in the Player class
     def betting_round(self):
         x = input("Press Enter to Continue: ")
+        for i in players:#maybe make a temp list of players so we can exclude players who have folded
+            action = i.getAction()
+            if action.action == "CALL":
+                i.bet(action.amount)
+            elif action.action == "RAISE":
+                i.bet(action.amount)
+                self.pot += action.amount
+            elif action.action == "FOLD":
+                i.bet(0)
+                #also do some other shiz
+            elif action.action == "CHECK":
+                i.bet(0)
 
     #When there is five cards left, determine the best hand out of all the players
     def determine_winning_hand(self):
@@ -225,3 +234,6 @@ class PokerGame:
         return max(best_cards_and_players, key=lambda k: best_cards_and_players[k])
 
 # method on card to compare cards or convert it to an integer value
+
+
+
