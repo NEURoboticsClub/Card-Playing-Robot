@@ -8,6 +8,8 @@ import copy
 import random
 from dataclasses import dataclass
 import copy
+from abc import ABC, abstractmethod
+
 
 @dataclass
 class PokerAction:
@@ -29,7 +31,28 @@ class PokerAction:
 #blind: enum class: {SMALL, BIG, NONE}
 #bet(number_of_chips: int)
 
-class Player:
+class AbstractPlayer(ABC):
+    @abstractmethod
+    def __init__(self):
+        pass
+
+    @abstractmethod
+    def getAction(self):
+        pass
+
+    @abstractmethod
+    def bet(self, number_of_chips: int):
+        pass
+
+    @abstractmethod
+    def discard(self):
+        pass
+
+    @abstractmethod
+    def add_card_to_hand(self, card: Card):
+        pass
+
+class Player(AbstractPlayer):
     name: str
     chips: int
     current_bet: int
@@ -83,6 +106,9 @@ class Player:
 #Task 3: Create the ultimate simulator function combining all the previous functions to fully simulate a new game.
 #Task 4: Create unit tests for the tasks 1-3
 #Task 5: Recreate Betting Round.
+
+
+newPokerGame = PokerGame([Player("Player 1", 1000, [PokerAction.generateRaise("CALL")]),Player("Player 2", 1000, [PokerAction.generateRaise("CALL")])])
 
 class PokerGame:
     players: List[Player]
