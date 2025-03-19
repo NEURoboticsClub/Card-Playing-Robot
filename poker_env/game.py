@@ -235,5 +235,3 @@ class PokerGame:
 
 # method on card to compare cards or convert it to an integer value
 
-
-
