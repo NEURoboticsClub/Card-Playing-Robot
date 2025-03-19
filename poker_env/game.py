@@ -7,6 +7,7 @@ from typing import List
 import copy
 import random
 from dataclasses import dataclass
+import copy
 
 @dataclass
 class PokerAction:
@@ -50,6 +51,7 @@ class Player:
 
     def bet(self, number_of_chips: int):
         self.current_bet = number_of_chips
+        self.chips -= number_of_chips
 
     #remove the current hand
     def discard(self):
@@ -189,19 +191,23 @@ class PokerGame:
 
     #goes through every player and forces each player to take their designated action as determined in the Player class
     def betting_round(self):
+        temp_players = self.players.copy()
         x = input("Press Enter to Continue: ")
-        for i in players:#maybe make a temp list of players so we can exclude players who have folded
-            action = i.getAction()
+        for i in range(len(players)):#maybe make a temp list of players so we can exclude players who have folded
+            action = temp_players[i].getAction()
             if action.action == "CALL":
-                i.bet(action.amount)
+                temp_players[i].bet(self.buy_in)
+                self.pot += temp_players[i].current_bet
             elif action.action == "RAISE":
-                i.bet(action.amount)
-                self.pot += action.amount
+                self.buy_in += action.amount
+                temp_players[i].bet(self.buy_in)
+                self.pot += temp_players[i].current_bet
             elif action.action == "FOLD":
-                i.bet(0)
-                #also do some other shiz
+                self.players[i].bet(0)
+                self.players.remove(i)
+                
             elif action.action == "CHECK":
-                i.bet(0)
+                temp_players[i].bet(0)
 
     #When there is five cards left, determine the best hand out of all the players
     def determine_winning_hand(self):
