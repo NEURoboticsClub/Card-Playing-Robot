@@ -23,41 +23,39 @@ class PokerAction:
 
 
 #Players must have the following fields and methods:
-#name: str
-#chips: int
-#current_bet: int
-#hand: List[Card]
-#getAction() -> PokerAction
 #blind: enum class: {SMALL, BIG, NONE}
-#bet(number_of_chips: int)
 
 class AbstractPlayer(ABC):
-    @abstractmethod
-    def __init__(self):
-        pass
-
-    @abstractmethod
-    def getAction(self):
-        pass
-
-    @abstractmethod
-    def bet(self, number_of_chips: int):
-        pass
-
-    @abstractmethod
-    def discard(self):
-        pass
-
-    @abstractmethod
-    def add_card_to_hand(self, card: Card):
-        pass
-
-class Player(AbstractPlayer):
     name: str
     chips: int
     current_bet: int
+    hand: List[Card]
+
+
+    @abstractmethod
+    def __init__(self):
+        ...
+
+    @abstractmethod
+    def getAction(self,game_state: PokerGame):
+        ...
+
+    @abstractmethod
+    def bet(self, number_of_chips: int):
+        ...
+
+    @abstractmethod
+    def discard(self):
+        ...
+
+    @abstractmethod
+    def add_card_to_hand(self, card: Card):
+        ...
+
+class Player(AbstractPlayer):
+    
     _current_action: PokerAction
-    _hand: List[Card]
+    
     _action_list: List[PokerAction]
 
     def __init__(self, name: str, chips: int,action_list: List[PokerAction]):
@@ -83,7 +81,7 @@ class Player(AbstractPlayer):
     def add_card_to_hand(self, card: Card):
         self.hand.append(card)
 
-    def getAction(self):
+    def getAction(self,_: PokerGame):
         return self.action_list.pop(0)
     
 
@@ -111,7 +109,7 @@ class Player(AbstractPlayer):
 newPokerGame = PokerGame([Player("Player 1", 1000, [PokerAction.generateRaise("CALL")]),Player("Player 2", 1000, [PokerAction.generateRaise("CALL")])])
 
 class PokerGame:
-    players: List[Player]
+    _players: List[Player]
     _deck: List[Card]
     table_hand: List[Card]
     pot: int
