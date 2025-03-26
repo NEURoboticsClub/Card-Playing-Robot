@@ -214,24 +214,21 @@ class PokerGame:
 
 
     #goes through every player and forces each player to take their designated action as determined in the Player class
-    def betting_round(self):
-        temp_players = self.players.copy()
-        x = input("Press Enter to Continue: ")
-        for i in range(len(players)):#maybe make a temp list of players so we can exclude players who have folded
-            action = temp_players[i].getAction()
+    def betting_round(self,list_of_players,current_bet,current_pot):
+        for i in list_of_players:
+            action = i.getAction()
             if action.action == "CALL":
-                temp_players[i].bet(self.buy_in)
-                self.pot += temp_players[i].current_bet
-            elif action.action == "RAISE":
-                self.buy_in += action.amount
-                temp_players[i].bet(self.buy_in)
-                self.pot += temp_players[i].current_bet
-            elif action.action == "FOLD":
-                self.players[i].bet(0)
-                self.players.remove(i)
-                
+                i.bet(current_bet)
+                current_pot += current_bet
             elif action.action == "CHECK":
-                temp_players[i].bet(0)
+                i.bet(0)
+            elif action.action == "FOLD":
+                list_of_players.remove(i)
+            elif action.action == "RAISE":
+                i.bet(action.amount)
+                return self.betting_round(list_of_players,current_bet + action.amount,current_pot + action.amount)
+            else:
+                raise Exception("Invalid action")
 
     #When there is five cards left, determine the best hand out of all the players
     def determine_winning_hand(self):
